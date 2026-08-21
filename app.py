@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 
 app = Flask(__name__)
-app.secret_key = "codefury_secret_key_123" # remember to change this later lol
 
 # TODO: hook up the database here later
 
