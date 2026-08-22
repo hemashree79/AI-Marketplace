@@ -43,3 +43,13 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f"<User id={self.id} email={self.email} role={self.role}>"
+
+class Product(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, primary_key=True)
+    developer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    specs = db.Column(db.Text)
+    status = db.Column(db.String(20), default='pending')
