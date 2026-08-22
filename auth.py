@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
-import database
+import Database
 
 # Create a 'Blueprint' to keep our login code separate from the main app
 auth_bp = Blueprint('auth', __name__)
@@ -15,7 +15,7 @@ def register():
     # Hash the password for security!
     hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
     
-    conn = database.get_db_connection()
+    conn = Database.get_db_connection()
     c = conn.cursor()
     
     try:
@@ -35,7 +35,7 @@ def login_submit():
     username = request.form.get('username')
     password = request.form.get('password')
     
-    conn = database.get_db_connection()
+    conn = Database.get_db_connection()
     user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     conn.close()
     
