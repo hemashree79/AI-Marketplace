@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Marketplace — Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">AI</span>
+      AI Marketplace
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="back-nav">
+      <a href="{{ url_for('index') }}" class="btn btn-ghost">&larr; Back</a>
+    </div>
+
+    <div class="page-heading">
+      <span class="eyebrow">Creator</span>
+      <h1>Continue as a Creator</h1>
+      <p>Upload, manage, and sell your AI models.</p>
+    </div>
+
+    <div class="card choice-card">
+      <div class="choice-option">
+        <h3>New Creator?</h3>
+        <a href="{{ url_for('creator_register') }}" class="btn btn-primary">Create Creator Account</a>
+      </div>
+
+      <div class="divider">or</div>
+
+      <div class="choice-option">
+        <h3>Already a creator?</h3>
+        <a href="{{ url_for('creator_login') }}" class="btn btn-secondary">Login</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 AI Marketplace. Built for a hackathon.
+  </footer>
+
+</body>
+</html>
