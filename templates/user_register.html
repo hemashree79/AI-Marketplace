@@ -1,0 +1,36 @@
+{% extends "base_auth.html" %}
+{% block title %}Create User Account — AI Marketplace{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h1>Create your account</h1>
+  <p class="sub">Join as a user to explore AI models.</p>
+
+  <form method="POST">
+    <label>Full Name</label>
+    <input type="text" name="name" value="{{ form.get('name','') }}" required>
+
+    <label>Email Address</label>
+    <input type="email" name="email" value="{{ form.get('email','') }}" required>
+
+    <label>Contact Number</label>
+    <input type="text" name="contact_number" value="{{ form.get('contact_number','') }}" required>
+
+    <label>Student / Working</label>
+    <select name="status" required>
+      <option value="" disabled {% if not form.get('status') %}selected{% endif %}>Select one</option>
+      <option value="student" {% if form.get('status')=='student' %}selected{% endif %}>Student</option>
+      <option value="working" {% if form.get('status')=='working' %}selected{% endif %}>Working</option>
+    </select>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <label>Confirm Password</label>
+    <input type="password" name="confirm_password" required>
+
+    <button type="submit" class="btn-primary">Create Account</button>
+  </form>
+
+  <p class="switch-link">Already have an account? <a href="{{ url_for('auth.user_login') }}">Log in</a></p>
+</div>
+{% endblock %}

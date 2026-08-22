@@ -1,0 +1,11 @@
+{% extends "base_auth.html" %}
+{% block title %}User Dashboard — AI Marketplace{% endblock %}
+{% block content %}
+<div class="dashboard-card">
+  <h1>User Dashboard</h1>
+  <p>Welcome, {{ account.name }}. Explore our wide range of AI models in the marketplace, or get tailored suggestions using our AI Recommendation System.</p>
+  <a href="{{ url_for('recommendation.recommendation_page') }}" class="btn" style="margin-right: 10px;">Get Recommendations</a>
+  <a href="{{ url_for('store') }}" class="btn" style="margin-right: 10px;">Visit Store</a>
+  <a href="{{ url_for('auth.logout') }}">Log out</a>
+</div>
+{% endblock %}

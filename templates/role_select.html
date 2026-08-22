@@ -1,0 +1,27 @@
+{% extends "base_auth.html" %}
+{% block title %}AI Marketplace{% endblock %}
+{% block content %}
+<div class="role-grid">
+
+  <div class="role-card">
+    <h2>User</h2>
+    <p>Explore and use AI models.</p>
+    <a class="primary" href="{{ url_for('auth.user_login') }}">Log in</a>
+    <a class="secondary" href="{{ url_for('auth.user_register') }}">Create account</a>
+  </div>
+
+  <div class="role-card">
+    <h2>Creator</h2>
+    <p>List and manage your AI models.</p>
+    <a class="primary" href="{{ url_for('auth.creator_login') }}">Log in</a>
+    <a class="secondary" href="{{ url_for('auth.creator_register') }}">Create account</a>
+  </div>
+
+  <div class="role-card">
+    <h2>Admin</h2>
+    <p>Manage the marketplace platform.</p>
+    <a class="primary" href="{{ url_for('auth.admin_login') }}">Log in</a>
+  </div>
+
+</div>
+{% endblock %}

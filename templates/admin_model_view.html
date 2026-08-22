@@ -1,0 +1,65 @@
+{% extends "base_auth.html" %}
+{% block title %}Review {{ model.name }} — AI Marketplace{% endblock %}
+{% block content %}
+<div class="review-card">
+
+  <div class="review-header">
+    {% if model.logo %}
+      <div class="logo-roundel logo-roundel-img">
+        <img src="{{ url_for('static', filename='uploads/models/' ~ model.logo) }}" alt="{{ model.name }} logo">
+      </div>
+    {% else %}
+      <div class="logo-roundel">{{ model.name[:2]|upper }}</div>
+    {% endif %}
+    <div>
+      <h1>{{ model.name }}</h1>
+      <span class="status-badge status-{{ model.status|lower }}">{{ model.status }}</span>
+    </div>
+  </div>
+
+  <div class="review-grid">
+    <div><span class="rlabel">Category</span><span class="rval">{{ model.category }}</span></div>
+    <div><span class="rlabel">Model Type</span><span class="rval">{{ model.model_type }}</span></div>
+    <div><span class="rlabel">Version</span><span class="rval">{{ model.version or "—" }}</span></div>
+    <div><span class="rlabel">API Available</span><span class="rval">{{ "Yes" if model.api_available else "No" }}</span></div>
+    <div><span class="rlabel">Accuracy</span><span class="rval">{{ model.accuracy or "—" }}</span></div>
+    <div><span class="rlabel">Performance</span><span class="rval">{{ model.performance or "—" }}</span></div>
+    <div><span class="rlabel">Monthly Price</span><span class="rval">${{ "%.2f"|format(model.monthly_price) }}</span></div>
+    <div><span class="rlabel">Yearly Price</span><span class="rval">${{ "%.2f"|format(model.yearly_price) }}</span></div>
+  </div>
+
+  <div class="review-block">
+    <span class="rlabel">Description</span>
+    <p>{{ model.description }}</p>
+  </div>
+  <div class="review-block">
+    <span class="rlabel">Use Cases</span>
+    <p>{{ model.use_cases or "—" }}</p>
+  </div>
+  <div class="review-block">
+    <span class="rlabel">Features</span>
+    <p>{{ model.features or "—" }}</p>
+  </div>
+  <div class="review-block">
+    <span class="rlabel">Technical Requirements</span>
+    <p>{{ model.technical_requirements or "—" }}</p>
+  </div>
+  <div class="review-block">
+    <span class="rlabel">Creator</span>
+    <p>{{ model.creator.name if model.creator else "Unknown" }} ({{ model.creator.email if model.creator else "—" }})</p>
+  </div>
+
+  {% if model.status == "PENDING" %}
+  <div class="review-actions">
+    <form method="POST" action="{{ url_for('models_bp.admin_model_approve', model_id=model.id) }}">
+      <button type="submit" class="btn-approve">Approve Model</button>
+    </form>
+    <form method="POST" action="{{ url_for('models_bp.admin_model_reject', model_id=model.id) }}">
+      <button type="submit" class="btn-reject">Reject Model</button>
+    </form>
+  </div>
+  {% endif %}
+
+  <p class="switch-link"><a href="{{ url_for('auth.admin_dashboard') }}">&larr; Back to dashboard</a></p>
+</div>
+{% endblock %}

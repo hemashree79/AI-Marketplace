@@ -1,0 +1,72 @@
+{% extends "base_auth.html" %}
+{% block title %}Explore AI Models — AI Marketplace{% endblock %}
+
+{% block header %}
+<header class="market-header">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#2563EB"/><path d="M16 8L22 22H10L16 8Z" fill="white"/></svg>
+    <span>AI Marketplace</span>
+  </div>
+
+  <ul class="nav-center">
+    <li><a href="#">Solutions</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#">Support</a></li>
+  </ul>
+
+  <div class="user-menu">
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="model-search" placeholder="Search AI models..." autocomplete="off">
+    </div>
+    <a href="#" class="cart-btn" title="Cart (coming soon)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    </a>
+    <span class="greeting">Hi, {{ account.name.split(' ')[0] }}</span>
+    <a href="{{ url_for('auth.logout') }}" class="logout-link">Log out</a>
+  </div>
+</header>
+{% endblock %}
+
+{% block main_class %}market-main{% endblock %}
+
+{% block content %}
+<div class="market-intro">
+  <h1>Explore AI models</h1>
+  <p>Discover AI models for your projects and applications.</p>
+</div>
+
+<div class="model-grid" id="model-grid">
+  {% for model in models %}
+  <a href="{{ url_for('storefront.model_details', slug=model.slug) }}" class="model-card" data-model-name="{{ model.name|lower }}">
+    <div class="model-logo">{{ model.name[:2]|upper }}</div>
+    <div class="model-name">{{ model.name }}</div>
+    <div class="stars-row">
+      <span class="stars">{{ model.stars }}</span>
+      <span class="rating-text">{{ model.quality }}/5</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<p class="no-results" id="no-results">No AI models match your search.</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const searchInput = document.getElementById('model-search');
+  const grid = document.getElementById('model-grid');
+  const noResults = document.getElementById('no-results');
+
+  searchInput.addEventListener('input', function () {
+    const query = this.value.trim().toLowerCase();
+    let visible = 0;
+    grid.querySelectorAll('.model-card').forEach((card) => {
+      const matches = card.dataset.modelName.includes(query);
+      card.classList.toggle('is-hidden', !matches);
+      if (matches) visible += 1;
+    });
+    noResults.classList.toggle('visible', visible === 0);
+  });
+</script>
+{% endblock %}

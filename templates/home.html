@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Marketplace — Home</title>
+
+<!--
+  =====================================================================
+  AI MARKETPLACE — HOME / MARKETPLACE PAGE (Flask template)
+  =====================================================================
+  Model cards are now rendered SERVER-SIDE from `models` (a list of dicts
+  passed in by the route - see marketplace_service.get_marketplace_models()).
+  Each dict combines predefined models (model_data.py) and approved
+  creator-uploaded models (SQLite) into one identical shape, so this
+  template never needs to know which source a model came from.
+
+  This same template is reused for BOTH the user marketplace and the
+  creator's version of it - the creator just gets two extra sections
+  (upload button + their own models table), controlled by `is_creator`.
+  =====================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/shared.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#2563EB"/><path d="M16 8L22 22H10L16 8Z" fill="white"/></svg>
+    <span>AI Marketplace</span>
+  </div>
+
+  <nav class="center">
+    <a>Solutions</a>
+    <a>Pricing</a>
+    <a>Support</a>
+  </nav>
+
+  <div class="right">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="Search AI models...">
+    </div>
+    <div class="cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+      <span class="dot"></span>
+    </div>
+    <a href="{{ url_for('auth.logout') }}" class="logout-link">Log out</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Trusted by 2,000+ teams</div>
+  <h1>Explore AI Models</h1>
+  <p>Discover trusted AI models for your projects.</p>
+
+  <div class="trust-strip">
+    <div class="stat"><div class="num">{{ models|length }}</div><div class="label">Models listed</div></div>
+    <div class="stat"><div class="num">98%</div><div class="label">Verified creators</div></div>
+    <div class="stat"><div class="num">4.7</div><div class="label">Avg. rating</div></div>
+    <div class="stat"><div class="num">10K+</div><div class="label">Developers</div></div>
+  </div>
+
+  {# ---------------------------------------------------------------
+     CREATOR-ONLY: prominent "Upload New AI Model" button.
+     Only rendered when the logged-in account is a creator.
+     --------------------------------------------------------------- #}
+  {% if is_creator %}
+  <a href="{{ url_for('models_bp.creator_upload') }}" class="upload-btn">+ Upload New AI Model</a>
+  {% endif %}
+</section>
+
+{# ---------------------------------------------------------------
+   CREATOR-ONLY: table of models this creator has uploaded, with status.
+   --------------------------------------------------------------- #}
+{% if is_creator %}
+<div class="section-head">
+  <h2>Your Uploaded Models</h2>
+  <span>{{ my_models|length }} total</span>
+</div>
+
+{% if my_models %}
+<div class="my-models-table">
+  <div class="my-models-row my-models-head">
+    <span>Model</span><span>Type</span><span>Monthly Price</span><span>Uploaded</span><span>Status</span>
+  </div>
+  {% for m in my_models %}
+  <div class="my-models-row">
+    <span>{{ m.name }}</span>
+    <span>{{ m.model_type }}</span>
+    <span>${{ "%.2f"|format(m.monthly_price) }}</span>
+    <span>{{ m.created_at.strftime('%d %b %Y') }}</span>
+    <span class="status-badge status-{{ m.status|lower }}">{{ m.status }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty-note">You haven't uploaded any models yet. Click "Upload New AI Model" above to submit your first one.</p>
+{% endif %}
+{% endif %}
+
+<div class="section-head">
+  <h2>{% if is_creator %}Marketplace Preview{% else %}Featured Models{% endif %}</h2>
+  <span>{{ models|length }} live</span>
+</div>
+
+<div class="grid" id="modelGrid">
+  {% for m in models %}
+  <a href="{{ url_for('models_bp.model_details', model_id=m.id) }}" class="card" data-name="{{ m.name|lower }}">
+    {% if m.rating %}<span class="rating-badge">{{ m.rating }}</span>{% endif %}
+
+    {% if m.logo %}
+      <div class="logo-roundel logo-roundel-img">
+        <img src="{{ url_for('static', filename='uploads/models/' ~ m.logo) }}" alt="{{ m.name }} logo">
+      </div>
+    {% else %}
+      <div class="logo-roundel">{{ m.name[:2]|upper }}</div>
+    {% endif %}
+
+    <h3>{{ m.name }}</h3>
+    {% if m.creator_verified %}<span class="verified">Verified</span>{% endif %}
+  </a>
+  {% endfor %}
+</div>
+
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+</body>
+</html>

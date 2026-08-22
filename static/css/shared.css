@@ -1,0 +1,146 @@
+/* =============================================================================
+   shared.css
+   Extra components used by both the marketplace-style pages (home.css) and
+   the auth/dashboard-style pages (auth.css): status badges, logo image
+   variant, review/details page layout, pricing boxes, creator profile block.
+   Uses the SAME color tokens as home.css/auth.css - keep values in sync if
+   you change the palette.
+   ============================================================================= */
+:root{
+  --amber:#B45309;
+  --amber-soft:#FEF3E0;
+}
+
+/* ---------- Logo roundel with a real uploaded image inside ---------- */
+.logo-roundel-img{ padding:0; overflow:hidden; background:var(--bg, #F7F9FC); }
+.logo-roundel-img img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; }
+.logo-roundel.small{ width:44px; height:44px; border-radius:10px; font-size:12px; }
+
+/* ---------- Status badges (Pending / Approved / Rejected) ---------- */
+.status-badge{
+  display:inline-block; font-size:11px; font-weight:700; letter-spacing:.02em;
+  padding:3px 10px; border-radius:20px; text-transform:uppercase;
+}
+.status-pending{ background:var(--amber-soft); color:var(--amber); }
+.status-approved{ background:var(--green-soft); color:var(--green); }
+.status-rejected{ background:var(--red-soft, #FDECEC); color:var(--red, #DC2626); }
+
+/* ---------- Header extras on the marketplace page ---------- */
+.logout-link{
+  font-size:13.5px; font-weight:600; color:var(--text-secondary); text-decoration:none;
+  margin-left:4px;
+}
+.logout-link:hover{ color:var(--primary); }
+
+.upload-btn{
+  position:relative; display:inline-block; margin-top:18px;
+  background:var(--primary); color:#fff; text-decoration:none;
+  font-weight:600; font-size:14px; padding:11px 20px; border-radius:10px;
+  transition:background .15s, transform .15s;
+}
+.upload-btn:hover{ background:var(--primary-dark); transform:translateY(-1px); }
+
+/* ---------- Creator's "Your Uploaded Models" table ---------- */
+.my-models-table{
+  max-width:1000px; margin:0 auto 40px; padding:0 32px;
+}
+.my-models-row{
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  gap:12px; align-items:center;
+  padding:14px 16px; background:var(--card); border:1px solid var(--border);
+  border-radius:10px; margin-bottom:8px; font-size:13.5px;
+}
+.my-models-head{
+  background:transparent; border:none; font-weight:700; color:var(--text-secondary);
+  font-size:12px; text-transform:uppercase; letter-spacing:.04em; padding:0 16px;
+}
+.empty-note{ text-align:center; color:var(--text-secondary); font-size:14px; padding:20px; }
+
+/* ---------- Admin: pending approvals list ---------- */
+.admin-wrap{ max-width:1000px; margin:0 auto; padding:32px; }
+.admin-header-card{ margin:0 0 8px; max-width:none; text-align:left; }
+.pending-list{ display:flex; flex-direction:column; gap:12px; }
+.pending-item{
+  display:flex; align-items:center; gap:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:16px 18px;
+}
+.pending-info{ flex:1; min-width:0; }
+.pending-info h4{ margin:0 0 4px; font-size:15px; }
+.pending-meta{ margin:0 0 4px; color:var(--text-secondary); font-size:12.5px; }
+.pending-desc{ margin:0; color:var(--text-secondary); font-size:13px; }
+.pending-actions{ display:flex; gap:8px; flex-shrink:0; }
+
+.btn-secondary-sm{
+  text-decoration:none; font-size:13px; font-weight:600; padding:7px 14px;
+  border-radius:8px; background:var(--primary-tint-1); color:var(--primary);
+}
+.btn-approve-sm, .btn-reject-sm{
+  border:none; font-size:13px; font-weight:600; padding:7px 14px; border-radius:8px; cursor:pointer;
+}
+.btn-approve-sm{ background:var(--green-soft); color:var(--green); }
+.btn-reject-sm{ background:var(--red-soft, #FDECEC); color:var(--red, #DC2626); }
+
+/* ---------- Admin review page + model details page (shared layout) ---------- */
+.review-card, .details-card{
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:32px; max-width:640px; width:100%; text-align:left;
+}
+.review-header{ display:flex; align-items:center; gap:16px; margin-bottom:22px; }
+.review-header h1{ font-size:21px; margin-bottom:6px; }
+.review-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px;
+}
+.rlabel{
+  display:block; font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.04em; color:var(--text-secondary); margin-bottom:3px;
+}
+.rval{ font-size:14px; font-weight:600; }
+.review-block{ margin-bottom:18px; }
+.review-block p{ margin:2px 0 0; font-size:14px; color:var(--text); line-height:1.5; }
+.review-actions{ display:flex; gap:12px; margin-top:26px; }
+.btn-approve, .btn-reject{
+  flex:1; border:none; padding:12px 16px; border-radius:10px; font-weight:700;
+  font-size:14px; cursor:pointer; transition:transform .15s;
+}
+.btn-approve{ background:var(--green); color:#fff; }
+.btn-reject{ background:var(--red, #DC2626); color:#fff; }
+.btn-approve:hover, .btn-reject:hover{ transform:translateY(-1px); }
+
+/* ---------- Model details: pricing + creator profile ---------- */
+.pricing-row{ display:flex; gap:14px; margin:22px 0; }
+.price-box{
+  flex:1; background:var(--primary-tint-1); border-radius:12px; padding:16px; text-align:center;
+}
+.price-num{ font-family:'Plus Jakarta Sans'; font-weight:800; font-size:22px; color:var(--primary); margin-top:2px; }
+
+.creator-profile{
+  border-top:1px solid var(--border); margin-top:24px; padding-top:20px;
+}
+.creator-profile-row{ display:flex; align-items:center; gap:14px; margin-top:8px; }
+.creator-avatar{
+  width:46px; height:46px; border-radius:50%; background:var(--primary-tint-2);
+  color:var(--primary); font-family:'Plus Jakarta Sans'; font-weight:700; font-size:14px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.creator-profile-row h4{ margin:0 0 3px; font-size:14.5px; display:flex; align-items:center; gap:8px; }
+
+/* ---------- Upload form textarea (auth.css only styles input/select) ---------- */
+form textarea{
+  width:100%; padding:10px 12px; border-radius:10px;
+  border:1px solid var(--border); background:var(--bg);
+  font-family:'Inter'; font-size:14px; color:var(--text); resize:vertical;
+}
+form textarea:focus{
+  outline:none; border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-tint-1);
+  background:var(--card);
+}
+.upload-card{ max-width:480px; }
+
+
+
+@media (max-width:700px){
+  .my-models-row{ grid-template-columns:1fr 1fr; row-gap:4px; }
+  .review-grid{ grid-template-columns:1fr; }
+  .pending-item{ flex-direction:column; align-items:flex-start; }
+}

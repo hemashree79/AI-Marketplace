@@ -1,0 +1,72 @@
+{% extends "base_auth.html" %}
+{% block title %}{{ model.name }} — AI Marketplace{% endblock %}
+{% block content %}
+<div class="details-card">
+
+  <div class="review-header">
+    {% if model.logo %}
+      <div class="logo-roundel logo-roundel-img">
+        <img src="{{ url_for('static', filename='uploads/models/' ~ model.logo) }}" alt="{{ model.name }} logo">
+      </div>
+    {% else %}
+      <div class="logo-roundel">{{ model.name[:2]|upper }}</div>
+    {% endif %}
+    <div>
+      <h1>{{ model.name }}</h1>
+      <p class="sub" style="margin:0;">{{ model.category }} &middot; {{ model.model_type }}</p>
+    </div>
+    {% if model.rating %}<span class="rating-badge" style="position:static;">{{ model.rating }}</span>{% endif %}
+  </div>
+
+  <div class="review-block">
+    <span class="rlabel">Description</span>
+    <p>{{ model.description }}</p>
+  </div>
+
+  <div class="review-grid">
+    <div><span class="rlabel">Version</span><span class="rval">{{ model.version or "—" }}</span></div>
+    <div><span class="rlabel">API Available</span><span class="rval">{{ "Yes" if model.api_available else "No" }}</span></div>
+    <div><span class="rlabel">Accuracy</span><span class="rval">{{ model.accuracy or "—" }}</span></div>
+    <div><span class="rlabel">Performance</span><span class="rval">{{ model.performance or "—" }}</span></div>
+  </div>
+
+  <div class="review-block">
+    <span class="rlabel">Features</span>
+    <p>{{ model.features or "—" }}</p>
+  </div>
+  <div class="review-block">
+    <span class="rlabel">Use Cases</span>
+    <p>{{ model.use_cases or "—" }}</p>
+  </div>
+  <div class="review-block">
+    <span class="rlabel">Technical Requirements</span>
+    <p>{{ model.technical_requirements or "—" }}</p>
+  </div>
+
+  <div class="pricing-row">
+    <div class="price-box">
+      <span class="rlabel">Monthly</span>
+      <div class="price-num">${{ "%.2f"|format(model.monthly_price) }}</div>
+    </div>
+    <div class="price-box">
+      <span class="rlabel">Yearly</span>
+      <div class="price-num">${{ "%.2f"|format(model.yearly_price) }}</div>
+    </div>
+  </div>
+
+  <div class="creator-profile">
+    <span class="rlabel">Creator</span>
+    <div class="creator-profile-row">
+      <div class="creator-avatar">{{ model.creator_name[:2]|upper }}</div>
+      <div>
+        <h4>{{ model.creator_name }}
+          {% if model.creator_verified %}<span class="verified">Verified</span>{% endif %}
+        </h4>
+        <p class="pending-desc">{{ model.creator_bio }}</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="switch-link"><a href="javascript:history.back()">&larr; Back to marketplace</a></p>
+</div>
+{% endblock %}

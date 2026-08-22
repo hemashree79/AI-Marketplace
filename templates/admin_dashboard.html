@@ -1,0 +1,55 @@
+{% extends "base_auth.html" %}
+{% block title %}Admin Dashboard — AI Marketplace{% endblock %}
+{% block content %}
+<div class="admin-wrap">
+  <div class="dashboard-card admin-header-card">
+    <h1>Admin Dashboard</h1>
+    <p>Logged in as {{ account.email }}.</p>
+    <a href="{{ url_for('auth.logout') }}">Log out</a>
+  </div>
+
+  <div class="section-head">
+    <h2>Pending Model Approvals</h2>
+    <span>{{ pending_models|length }} waiting</span>
+  </div>
+
+  {% if pending_models %}
+  <div class="pending-list">
+    {% for m in pending_models %}
+    <div class="pending-item">
+      {% if m.logo %}
+        <div class="logo-roundel logo-roundel-img small">
+          <img src="{{ url_for('static', filename='uploads/models/' ~ m.logo) }}" alt="{{ m.name }} logo">
+        </div>
+      {% else %}
+        <div class="logo-roundel small">{{ m.name[:2]|upper }}</div>
+      {% endif %}
+
+      <div class="pending-info">
+        <h4>{{ m.name }}</h4>
+        <p class="pending-meta">
+          by {{ m.creator.name if m.creator else "Unknown" }} &middot;
+          {{ m.model_type }} &middot; {{ m.category }} &middot;
+          ${{ "%.2f"|format(m.monthly_price) }}/mo &middot;
+          submitted {{ m.created_at.strftime('%d %b %Y') }}
+        </p>
+        <p class="pending-desc">{{ m.description[:140] }}{% if m.description|length > 140 %}...{% endif %}</p>
+      </div>
+
+      <div class="pending-actions">
+        <a href="{{ url_for('models_bp.admin_model_view', model_id=m.id) }}" class="btn-secondary-sm">View</a>
+        <form method="POST" action="{{ url_for('models_bp.admin_model_approve', model_id=m.id) }}" style="display:inline;">
+          <button type="submit" class="btn-approve-sm">Approve</button>
+        </form>
+        <form method="POST" action="{{ url_for('models_bp.admin_model_reject', model_id=m.id) }}" style="display:inline;">
+          <button type="submit" class="btn-reject-sm">Reject</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty-note">No pending submissions right now.</p>
+  {% endif %}
+</div>
+{% endblock %}
