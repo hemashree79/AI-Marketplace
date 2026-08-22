@@ -1,0 +1,20 @@
+# Virtual environments - never commit these
+venv/
+venv1/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local database (each environment should create/manage its own)
+instance/
+marketplace.db
+
+# Environment variables / secrets
+.env
+
+# OS/editor junk
+.DS_Store
+*.swp

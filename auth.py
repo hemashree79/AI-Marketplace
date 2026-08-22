@@ -9,8 +9,9 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
 from extensions import db
-from models import User
+from models import User, Model
 from decorators import role_required
+from marketplace_service import get_marketplace_models
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -173,21 +174,52 @@ def logout():
 @login_required
 @role_required("user")
 def user_dashboard():
-    return render_template("user_dashboard.html", account=current_user)
+    """
+    This IS the marketplace for a normal user - predefined models + all
+    APPROVED creator models, combined (see marketplace_service.py).
+    """
+    models = get_marketplace_models()
+    return render_template("home.html", models=models, is_creator=False, account=current_user)
 
 
 @auth_bp.route("/creator/dashboard")
 @login_required
 @role_required("creator")
 def creator_dashboard():
-    return render_template("creator_dashboard.html", account=current_user)
+    """
+    Same marketplace page a normal user sees, PLUS:
+      - an "Upload New AI Model" button
+      - a table of this creator's own uploaded models with their status
+    (per the requirement: creator gets the home page + an added upload feature,
+    not a separate design.)
+    """
+    models = get_marketplace_models()
+    my_models = (
+        Model.query
+        .filter_by(creator_id=current_user.id)
+        .order_by(Model.created_at.desc())
+        .all()
+    )
+    return render_template(
+        "home.html",
+        models=models,
+        is_creator=True,
+        my_models=my_models,
+        account=current_user,
+    )
 
 
 @auth_bp.route("/admin/dashboard")
 @login_required
 @role_required("admin")
 def admin_dashboard():
-    return render_template("admin_dashboard.html", account=current_user)
+    pending_models = (
+        Model.query
+        .filter_by(status="PENDING")
+        .order_by(Model.created_at.asc())
+        .all()
+    )
+    return render_template("admin_dashboard.html", account=current_user, pending_models=pending_models)
 
 
 # =============================================================================
@@ -195,7 +227,7 @@ def admin_dashboard():
 # Used by both /register/user and /register/creator since the form shape
 # is identical - only the resulting `role` differs.
 # =============================================================================
-def _validate_registration_form(form) -> str | None:
+def _validate_registration_form(form) -> str:
     """Returns an error message string if the form is invalid, else None."""
     name = form.get("name", "").strip()
     email = form.get("email", "").strip().lower()
