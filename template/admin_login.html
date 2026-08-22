@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Marketplace — Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">AI</span>
+      AI Marketplace
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="back-nav">
+      <a href="{{ url_for('index') }}" class="btn btn-ghost">&larr; Back</a>
+    </div>
+
+    <div class="page-heading">
+      <span class="eyebrow">Admin</span>
+      <h1>Admin Login</h1>
+      <p>Restricted access. Admin accounts are managed by the system.</p>
+    </div>
+
+    <div class="card form-card">
+      <div class="alert" id="form-alert"></div>
+
+      <form id="admin-login-form" novalidate>
+
+        <div class="form-group">
+          <label for="login-id">Admin Login ID</label>
+          <input type="text" id="login-id" name="login_id" data-field="login-id" data-error-for="login-id-error" placeholder="admin ID">
+          <span class="field-error" id="login-id-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" data-field="password" data-error-for="password-error" placeholder="Enter your password">
+          <span class="field-error" id="password-error"></span>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Admin Login</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 AI Marketplace. Built for a hackathon.
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script>
+    setupLoginForm('admin-login-form');
+  </script>
+</body>
+</html>
